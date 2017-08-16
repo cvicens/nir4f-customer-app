@@ -1,0 +1,34 @@
+<ion-header>
+  <ion-navbar>
+    <ion-title *ngIf="!currentAnalysis.date">
+      No analysis selected
+    </ion-title>
+    <ion-title *ngIf="currentAnalysis.date">
+      Analysis, {{currentAnalysis.date}}
+    </ion-title>
+  </ion-navbar>
+</ion-header>
+ 
+<ion-content >
+     <ion-grid class="chart-container" no-padding>
+ 
+        <ion-row class="chart-section">
+          <ion-col>
+            <!--<ion-card *ngIf="!currentAnalysis.date">
+              <ion-card-content>
+                <button ion-button (click)="runScan()">Run a new scan</button>
+              </ion-card-content>
+            </ion-card>-->
+
+            
+            <canvas  class="chart-canvas" #barCanvas></canvas>
+            
+          </ion-col>
+        </ion-row>
+  
+        <ion-row class="comments-section">
+          <ion-col>Amethyst!</ion-col>
+        </ion-row>
+ 
+    </ion-grid>
+</ion-content>

@@ -1,0 +1,41 @@
+page-main {
+
+        $button-ios-border-radius: 20px;
+        $button-md-border-radius: 20px;
+        //ion-card-header {
+        //    font-weight: bolder;
+        //}
+
+        scroll-content {
+            background-color: map-get($colors, dark);
+            display: flex;
+            flex-direction: column;
+        }
+        
+
+        //.button-ios, .button-md {
+        //}
+//
+        //.button-full-ios, .button-full-md {
+        //    height: 100%;
+        //    background-color:red;
+        //}
+//
+        //ion-grid {
+        //    padding: 0;
+        //    height: 100%;
+        //}
+        
+
+        .header-section {
+            background-color: rebeccapurple;
+            flex: 2;
+        }
+
+        .buttons-section {
+            background-color:whitesmoke;
+            flex: 1;
+        }
+
+        
+}

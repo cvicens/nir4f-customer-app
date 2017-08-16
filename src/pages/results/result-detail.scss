@@ -1,0 +1,33 @@
+page-result-detail {
+
+        ion-card-header {
+            font-weight: bolder;
+        }
+
+        scroll-content {
+            background-color: map-get($colors, dark);
+            display: flex;
+            flex-direction: column;
+        }
+    
+        ion-grid {
+            padding: 0;
+            height: 100%;
+        }
+        
+        .chart-canvas {
+            //background-color: map-get($colors, light);
+            padding: 8px;
+        }
+
+        .chart-section {
+            background-color:red;
+            flex: 3;
+        }
+
+        .comments-section {
+            background-color: rebeccapurple;
+            flex: 1;
+        }
+
+}

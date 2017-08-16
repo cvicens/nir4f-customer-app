@@ -14,3 +14,23 @@
 // To declare rules for a specific mode, create a child rule
 // for the .md, .ios, or .wp mode classes. The mode class is
 // automatically applied to the <body> element in the app.
+
+.split-pane-ios.split-pane-visible >.split-pane-side {
+    max-width: 180px;
+    min-width: 180px;
+    border-right: $hairlines-width solid $list-ios-border-color;
+}
+
+.split-pane-md.split-pane-visible >.split-pane-side {
+    max-width: 180px;
+    min-width: 180px;
+
+    border-right: 1px solid $list-md-border-color;
+}
+
+.split-pane-wp.split-pane-visible >.split-pane-side {
+    max-width: 180px;
+    min-width: 180px;
+
+    border-right: 1px solid $list-wp-border-color;
+}
