@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 
 import { NavController } from 'ionic-angular';
 
+import { MainPage } from '../main/main';
 import { ResultsListPage } from './results-list';
 import { ResultDetailPage } from './result-detail';
 
@@ -32,5 +33,13 @@ export class ResultsPage {
 
   setAsCurrentAnalysis (id: string) {
     this.stateService.setAsCurrentAnalysis(id);
+  }
+
+  back() {
+    // Reset the content nav to have just this page
+    // we wouldn't want the back button to show in this scenario
+     //this.rootPage = page.component;
+     this.navCtrl.setRoot(MainPage);
+     //this.navCtrl.push(page.component);
   }
 }

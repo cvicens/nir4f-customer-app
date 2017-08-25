@@ -4,11 +4,11 @@ page-main {
     $button-board-opacity-hover: .8 !default;
 
 
-    scroll-content {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-    }
+    //scroll-content {
+    //    display: flex;
+    //    flex-direction: column;
+    //    justify-content: center;
+   // }
  
     ion-grid {
         padding: 0;
@@ -85,9 +85,54 @@ page-main {
         background-color: map-get($colors, darker); 
     }
 
-    .dashboard-row {
+    .dashboard-row-1 {
         display: flex; 
-        flex: 5;
+        flex: calc(2);
+        //height: 33vh;
+        flex-direction: row; 
+        justify-content: center;
+        background-color: map-get($colors, darker);
+    }
+
+    .dashboard-row-2 {
+        display: flex; 
+        flex: calc(3);
+        //height: 33vh;
+        flex-direction: row; 
+        justify-content: center;
+        background-color: map-get($colors, darker);
+    }
+
+    .dashboard-row-3 {
+        display: flex; 
+        flex: calc(3);
+        //height: 33vh;
+        flex-direction: row; 
+        justify-content: center;
+        background-color: map-get($colors, darker);
+    }
+
+    .details-row-1 {
+        display: flex; 
+        flex: calc(2);
+        //height: 33vh;
+        flex-direction: row; 
+        justify-content: center;
+        background-color: map-get($colors, darker);
+    }
+
+    .details-row-2 {
+        display: flex; 
+        flex: calc(5);
+        //height: 33vh;
+        flex-direction: row; 
+        justify-content: center;
+        background-color: map-get($colors, darker);
+    }
+
+    .details-row-3 {
+        display: flex; 
+        flex: calc(1);
         //height: 33vh;
         flex-direction: row; 
         justify-content: center;

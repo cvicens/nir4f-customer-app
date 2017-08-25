@@ -1,5 +1,14 @@
 <ion-content class="home" no-bounce scroll="false">
  
+   <ion-fab middle right #fab>
+    <button ion-fab mini><ion-icon name="add"></ion-icon></button>
+    <ion-fab-list side="top">
+      <button (click)="runScan(fab)" ion-fab><ion-icon name="qr-scanner"></ion-icon></button>
+      <button *ngIf="currentAnalysis.date" (click)="shareAnalysis(fab)"  ion-fab><ion-icon name="md-share"></ion-icon></button>
+      <button *ngIf="currentAnalysis.date" (click)="clearStorage(fab)"  ion-fab><ion-icon name="trash"></ion-icon></button>
+    </ion-fab-list>
+  </ion-fab>
+
     <ion-grid no-padding>
  
       <!--<ion-row class="header-row" style="background-color: #e74c3c;">
@@ -8,39 +17,57 @@
 
       <ion-row class="button-row" style="background-color: #e7ee3c;">
 
-        <ion-col col-4 class="button-menu-bar">
-          <ion-row align-items-center><button ion-button full class="button-menu no-margin" icon-start><ion-icon name="home" class="button-menu-icon"></ion-icon><span class="button-menu-text">Home</span></button></ion-row>
-          <ion-row align-items-center><button ion-button full class="button-menu no-margin" icon-start><ion-icon name="home" class="button-menu-icon"></ion-icon><span class="button-menu-text">New Scan</span></button></ion-row>
-          <ion-row align-items-center><button ion-button full class="button-menu no-margin" icon-start><ion-icon name="home" class="button-menu-icon"></ion-icon><span class="button-menu-text">Recent</span></button></ion-row>
+        <ion-col col-2 class="button-menu-bar">
+          <ion-row *ngFor="let page of pages" align-items-center>
+            <button ion-button full class="button-menu no-margin" icon-start (click)="openPage(page)">
+              <ion-icon name="{{page.icon}}" class="button-menu-icon"></ion-icon><span class="button-menu-text">{{page.title}}</span>
+            </button>
+          </ion-row>
 
-          <ion-row align-items-center><button ion-button full class="button-menu no-margin" icon-start><ion-icon name="home" class="button-menu-icon"></ion-icon><span class="button-menu-text">Recent</span></button></ion-row>
+          <ion-row align-items-center><button ion-button full class="button-menu no-margin" icon-start (click)="runScan()"><ion-icon name="qr-scanner" class="button-menu-icon"></ion-icon><span class="button-menu-text">New Scan</span></button></ion-row>
+
         </ion-col>
 
-        <ion-col col-8 class="button-board" style="background-color: cadetblue;">
+        <ion-col col-10 class="button-board" *ngIf="showPage === 'DASHBOARD'">
+
+          <ion-row class="dashboard-row-1"  #kpiDashboardRow>
+            <ion-col col-3 no-padding><kpi parentSize [title]="'DM'" [dataSource]="'avgAnalysis'" [propertyName]="'dm'" ></kpi></ion-col>
+            <ion-col col-3 no-padding><kpi parentSize [title]="'CP'" [dataSource]="'avgAnalysis'" [propertyName]="'cp'"></kpi></ion-col>
+            <ion-col col-3 no-padding><kpi parentSize [title]="'DV'" [dataSource]="'avgAnalysis'" [propertyName]="'dv'"></kpi></ion-col>
+            <ion-col col-3 no-padding><kpi parentSize [title]="'ME'" [dataSource]="'avgAnalysis'" [propertyName]="'me'"></kpi></ion-col>
+          </ion-row>
+
+          <ion-row class="dashboard-row-2"  align-items-stretch #chartDashBoardRow1>
+            <ion-col col-6 no-padding><chart parentSize [title]="'Average analysis bars'" #chartComponentRow1> </chart></ion-col>
+            <ion-col col-6 no-padding><chart parentSize [dataSource]="'analyses'" [type]="'line'" [title]="'Historic analysis lines'" #chartComponentRow1> </chart></ion-col>
+          </ion-row>
+    
+          <ion-row class="dashboard-row-3"  align-items-stretch #chartDashBoardRow2>
+
+            <ion-col col-12 no-padding><chart parentSize [dataSource]="'currentAnalysis'" [title]="'Last Analysis'" #chartComponentRow1> </chart></ion-col>
+
+          </ion-row>
+
+        </ion-col>
+
+        <ion-col col-10 class="button-board" *ngIf="showPage === 'DETAILS'">
+
           
+          
+          <ion-row class="details-row-1">
+            <ion-col col-12 no-padding><timeline parentSize [propertyName]="'score'" [dataSource]="'scoreAnalysis'"  [type]="'line'" [title]="'Historic analysis lines'"> </timeline></ion-col>
+          </ion-row>          
+
+          <!--<ion-row class="dashboard-row-2"  align-items-stretch #chartDashBoardRow1>
+            <ion-col col-6 no-padding><chart parentSize [title]="'Average analysis bars'" #chartComponentRow1> </chart></ion-col>
+            <ion-col col-6 no-padding><chart parentSize [dataSource]="'analyses'" [type]="'line'" [title]="'Historic analysis lines'" #chartComponentRow1> </chart></ion-col>
+          </ion-row>-->
     
-          <ion-row style="background-color: cornflowerblue;" class="dashboard-row"  align-items-stretch >
+          <ion-row class="details-row-2"  align-items-stretch #chartDashBoardRow2>
 
-            <ion-col col-6 style="background-color: coral;" no-padding><kpi [title]="'D Value'" [value]="'25'"></kpi></ion-col>
-            <ion-col col-6 style="background-color: aqua;" no-padding><kpi [title]="'Eenergy M'" [value]="'55'"></kpi></ion-col>
-            <!--<ion-col col-4 style="background-color: limegreen;" no-padding><kpi [title]="'Crude protein'" [value]="'75'"></kpi></ion-col>-->
-            <!--<ion-col no-padding><kpi [title]="'Dry Matter'" [value]="'90'"></kpi></ion-col>-->
+            <ion-col col-12 no-padding><chart parentSize [dataSource]="'currentAnalysis'" [title]="'Last Analysis'" #chartComponentRow1> </chart></ion-col>
 
           </ion-row>
-
-          <ion-row class="dashboard-row"  align-items-stretch>
-
-            <ion-col style="background-color: burlywood;">Chart-1</ion-col>
-            <ion-col style="background-color: aquamarine;" >Chart-2</ion-col>
-
-          </ion-row>
-    
-          <ion-row class="dashboard-row"  align-items-stretch justify-content-center>
-
-            <ion-col style="background-color: green;" col-12 justify-content-center>Chart-3</ion-col>
-
-          </ion-row>
-
         </ion-col>
 
       

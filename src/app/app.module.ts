@@ -1,8 +1,14 @@
 import { NgModule, ErrorHandler } from '@angular/core';
 import { IonicApp, IonicModule, IonicErrorHandler } from 'ionic-angular';
+
+import { IonicStorageModule } from '@ionic/storage';
+
 import { MyApp } from './app.component';
 
 import { KpiComponent } from '../components/kpi/kpi.component';
+import { ChartComponent } from '../components/chart/chart.component';
+import { TimelineComponent } from '../components/timeline/timeline.component';
+import { HorizontalTimelineComponent } from '../components/horizontal-timeline/horizontal-timeline.component';
 
 import { MainPage } from '../pages/main/main';
 
@@ -24,10 +30,17 @@ import { StateService } from '../services/state.service';
 import { SocketService } from '../services/socket.service';
 import { FHService } from '../services/fh.service';
 
+// Directives
+import { ParentSizeDirective } from '../directives/parent-size.directive';
+
 @NgModule({
   declarations: [
     MyApp,
+    ParentSizeDirective,
     KpiComponent,
+    ChartComponent,
+    TimelineComponent,
+    HorizontalTimelineComponent,
     MainPage,
     LoginPage,
     AboutPage,
@@ -39,12 +52,14 @@ import { FHService } from '../services/fh.service';
     TabsPage
   ],
   imports: [
-    IonicModule.forRoot(MyApp)
+    IonicModule.forRoot(MyApp,{statusbarPadding: false}),
+    IonicStorageModule.forRoot()
   ],
   bootstrap: [IonicApp],
   entryComponents: [
     MyApp,
     KpiComponent,
+    ChartComponent,
     MainPage,
     LoginPage,
     AboutPage,

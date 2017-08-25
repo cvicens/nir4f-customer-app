@@ -4,6 +4,9 @@ import { NavController, ActionSheetController, FabContainer } from 'ionic-angula
 
 import { Chart } from 'chart.js';
 
+// Pages
+import { MainPage } from '../main/main';
+
 // Services (they have to be added to the providers array in ../../app.component.ts)
 import { StateService } from '../../services/state.service';
 
@@ -131,6 +134,13 @@ export class ResultDetailPage {
       fab.close();
     }
     this.stateService.runScan();
+  }
+
+  goToMain (fab?: FabContainer) {
+    if (fab !== undefined) {
+      fab.close();
+    }
+    this.navCtrl.setRoot(MainPage);
   }
 
   shareAnalysis (fab?: FabContainer) {

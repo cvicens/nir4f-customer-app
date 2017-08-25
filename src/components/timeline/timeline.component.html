@@ -1,0 +1,12 @@
+<div class="timeline"  #timelineElement>
+
+  <ion-row class="header-row">
+    <ion-col>{{title}}</ion-col>
+  </ion-row>
+  <ion-row class="timeline-row">
+    <div class="timeline-wrapper" >
+      <canvas (click)="onClick($event)" class="timeline-canvas" #canvas></canvas>
+    </div>
+  </ion-row>
+
+</div>

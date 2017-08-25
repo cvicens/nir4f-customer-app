@@ -6,6 +6,7 @@ import { NavController, ToastController } from 'ionic-angular';
 
 // Tabs
 import { TabsPage } from '../tabs/tabs';
+import { MainPage } from '../main/main';
 
 // Services (they have to be added to the providers array in ../../app.component.ts)
 import { FHService } from '../../services/fh.service';
@@ -45,7 +46,7 @@ export class LoginPage {
         this.stateService.updateUserRoles(result.roles);
         //console.log('result', result);
         this.message = 'Login OK';
-        this.navCtrl.setRoot(TabsPage);
+        this.navCtrl.setRoot(MainPage);
       })
       .catch( (err) => {
         console.log(err);

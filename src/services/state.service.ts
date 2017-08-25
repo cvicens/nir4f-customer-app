@@ -1,5 +1,7 @@
 import { ToastController } from 'ionic-angular';
 
+import { Storage } from '@ionic/storage';
+
 import { Injectable, OnInit, OnDestroy } from '@angular/core';
 import { Observable } from 'rxjs/Observable';
 import { BehaviorSubject } from "rxjs/Rx";
@@ -16,8 +18,14 @@ import { LiveQuiz } from '../model/live-quiz';
 import { Question } from '../model/question';
 import { Agenda } from '../model/agenda';
 
+import { DatasetItem } from '../model/dataset';
 import { Analysis } from '../model/analysis';
 import { Advisor } from '../model/advisor';
+
+const CURRENT_ANALISIS_KEY = 'currentAnalysis';
+const AVG_ANALISIS_KEY = 'avgAnalysis';
+const SCORE_ANALISIS_KEY = 'scoreAnalysis';
+const ANALYSES_KEY = 'analyses';
 
 @Injectable()
 export class StateService implements OnInit, OnDestroy {
@@ -69,11 +77,20 @@ export class StateService implements OnInit, OnDestroy {
   private _currentAnalysis: BehaviorSubject<Analysis> = new BehaviorSubject(new Analysis());
   public readonly currentAnalysis: Observable<Analysis> = this._currentAnalysis.asObservable();
 
+  private _avgAnalysis: BehaviorSubject<Analysis> = new BehaviorSubject(new Analysis());
+  public readonly avgAnalysis: Observable<Analysis> = this._avgAnalysis.asObservable();
+
+  private _scoreAnalysis: BehaviorSubject<Array<{id: string, score: number}>> = new BehaviorSubject(new Array<{id: string, score: number}>());
+  public readonly scoreAnalysis: Observable<Array<{id: string, score: number}>> = this._scoreAnalysis.asObservable();
+
   private _advisors: BehaviorSubject<Array<Advisor>> = new BehaviorSubject(new Array<Advisor>());
   public readonly advisors: Observable<Array<Advisor>> = this._advisors.asObservable();
 
   private _currentAdvisor: BehaviorSubject<Advisor> = new BehaviorSubject(new Advisor());
   public readonly currentAdvisor: Observable<Advisor> = this._currentAdvisor.asObservable();
+
+  private _online: BehaviorSubject<boolean> = new BehaviorSubject(false);
+  public readonly online: Observable<boolean> = this._online.asObservable();
 
   // Sockets
   questionsConnection;
@@ -92,7 +109,7 @@ export class StateService implements OnInit, OnDestroy {
     userRoles: null
   });
   
-  constructor(public toastCtrl: ToastController, private fhService: FHService, private socketService: SocketService) {
+  constructor(public toastCtrl: ToastController, private storage: Storage, private fhService: FHService, private socketService: SocketService) {
     console.log('New StateService!!!!');
     this.socketService.ready.subscribe(ready => {
       if (ready) {
@@ -107,14 +124,94 @@ export class StateService implements OnInit, OnDestroy {
         this.presentToast('Successfully reconnected');
       }
     });
+    this.fhService.ready.subscribe(ready => {
+      if (ready) {
+        this.initDatasets();
+      }
+    });
 
     // dummy advisors
     const dummyAdvisors: Array<Advisor> = [new Advisor('JOHN', 'SMITH', '+44-555-555-555'), new Advisor('JAMES', 'MORGAN', '+44-555-444-444')];
     this._advisors.next(dummyAdvisors);
+
+    // Init data
+    const initAvgAnalysis = new Analysis ('', 1, 2, 3, 0, 0, 0, 0, 0, 0, 0);
+    this._avgAnalysis.next(initAvgAnalysis);
+
+    // Get local data... test
+    this.storage.get(CURRENT_ANALISIS_KEY)
+    .then ((value) => { 
+      if (value) {
+        console.log('🗄 ', CURRENT_ANALISIS_KEY, value);
+        this._currentAnalysis.next(value);
+      }
+    })
+    .catch((error) => {
+      console.error('Storage error', error)
+    });
+
+    this.storage.get(AVG_ANALISIS_KEY)
+    .then ((value) => { 
+      if (value) {
+        console.log('🗄 ', AVG_ANALISIS_KEY, value);
+        this._avgAnalysis.next(value);
+      }
+    })
+    .catch((error) => {
+      console.error('Storage error', error)
+    });
+
+    this.storage.get(SCORE_ANALISIS_KEY)
+    .then ((value) => { 
+      if (value) {
+        console.log('🗄 ', SCORE_ANALISIS_KEY, value);
+        this._scoreAnalysis.next(value);
+      }
+    })
+    .catch((error) => {
+      console.error('Storage error', error)
+    });
+
+    this.storage.get(ANALYSES_KEY)
+    .then ((value) => { 
+      if (value) {
+        console.log('🗄 ', ANALYSES_KEY, value);
+        this._analyses.next(value);
+      }
+    })
+    .catch((error) => {
+      console.error('Storage error', error)
+    });
   }
 
   ngOnInit() {
     console.log('StateService->ngOnInit()');
+  }
+
+  // Let's subscribe our Observable datasets
+  initDatasets() {
+    console.log('StateService->initDatasets()');
+    this.fhService.syncNotification.subscribe(notification => {
+      if (notification) {
+
+        if( 'sync_complete' == notification.code ) {
+          let items = this.fhService.getAllItemsFromDataset(notification.dataset_id);
+          console.log('sync_complete : ', items);
+        }
+        else if( 'local_update_applied' === notification.code ) {
+          let items = this.fhService.getAllItemsFromDataset(notification.dataset_id);
+          console.log('local_update_applied : ', items);
+        }
+        else if( 'remote_update_failed' === notification.code ) {
+          const errorMsg = notification.message;
+          console.log('remote_update_failed : ', errorMsg);
+        }
+        
+      }
+    });
+
+    this.fhService.manageDataset(ANALYSES_KEY);
+
   }
 
   // Let's subscribe our Observable sockets
@@ -308,13 +405,97 @@ export class StateService implements OnInit, OnDestroy {
     return newAnalisys;
   }
 
+  calcScoreAnalysis (analyses: Array<Analysis>) {
+    // Let's generate score values
+    const scoreAnalysis = analyses.map((item, current) => {
+        return {
+          id:    item.id,
+          date:  item.date,
+          score: (item.dv + item.me + item.adf )/ item.ndf
+        };
+    });
+
+    return scoreAnalysis;
+  }
+
+  calcAvgAnalysis (analyses: Array<Analysis>) {
+    // Let's generate AVG values
+    var avgAnalysis = new Analysis();
+    const acc = analyses.reduce((acc, current) => {
+        return {
+          accDM:     acc.accDM     + (current.dm     ? current.dm     : 0),
+          accCP:     acc.accCP     + (current.cp     ? current.cp     : 0),
+          accDV:     acc.accDV     + (current.dv     ? current.dv     : 0),
+          accME:     acc.accME     + (current.me     ? current.me     : 0),
+          accStarch: acc.accStarch + (current.starch ? current.starch : 0),
+          accSugar:  acc.accSugar  + (current.sugar  ? current.sugar  : 0),
+          accNDF:    acc.accNDF    + (current.ndf    ? current.ndf    : 0),
+          accADF:    acc.accADF    + (current.adf    ? current.adf    : 0),
+          accPH:     acc.accPH     + (current.ph     ? current.ph     : 0),
+          accLA:     acc.accLA     + (current.la     ? current.la     : 0)
+        };
+    }, {accDM: 0, accCP: 0, accDV: 0, accME: 0, accStarch: 0, accSugar: 0, accNDF: 0, accADF: 0, accPH: 0, accLA: 0});
+    avgAnalysis.dm     = analyses.length <= 0 ? 0 : Math.round(acc.accDM / analyses.length);
+    avgAnalysis.cp     = analyses.length <= 0 ? 0 : Math.round(acc.accCP / analyses.length);
+    avgAnalysis.dv     = analyses.length <= 0 ? 0 : Math.round(acc.accDV / analyses.length);
+    avgAnalysis.me     = analyses.length <= 0 ? 0 : Math.round(acc.accME / analyses.length);
+    avgAnalysis.starch = analyses.length <= 0 ? 0 : Math.round(acc.accStarch / analyses.length);
+    avgAnalysis.sugar  = analyses.length <= 0 ? 0 : Math.round(acc.accSugar / analyses.length);
+    avgAnalysis.ndf    = analyses.length <= 0 ? 0 : Math.round(acc.accNDF / analyses.length);
+    avgAnalysis.adf    = analyses.length <= 0 ? 0 : Math.round(acc.accADF / analyses.length);
+    avgAnalysis.ph     = analyses.length <= 0 ? 0 : Math.round(acc.accPH / analyses.length);
+    avgAnalysis.la     = analyses.length <= 0 ? 0 : Math.round(acc.accLA / analyses.length);
+
+    return avgAnalysis;
+  }
+
   // Method that should use the scanner to get new data... 
   // and run some algorithm to get results, store them and push them to RHMAP
   runScan() {
     // Let's generate a random analysis
     var newAnalysis = this.randomAnalysis();
-    this._analyses.getValue().push(newAnalysis);
-    this._currentAnalysis.next(newAnalysis);    
+    this._currentAnalysis.next(newAnalysis);
+    // sync current analysis with server
+    this.fhService.saveItemIntoDataset(ANALYSES_KEY, new DatasetItem(newAnalysis.id, newAnalysis))
+    .then((data) => {
+      console.log('saveItemIntoDataset data', data);
+    })
+    .catch((err) => {
+      console.error('saveItemIntoDataset err', err);
+    });
+    const analyses = this._analyses.getValue();
+    analyses.push(newAnalysis);
+    this._analyses.next(analyses);
+
+    // set a key/value
+    this.storage.set(CURRENT_ANALISIS_KEY, newAnalysis);
+    this.storage.set(ANALYSES_KEY, analyses);
+
+    // Let's generate AVG values
+    var avgAnalysis = this.calcAvgAnalysis(analyses);
+    this._avgAnalysis.next(avgAnalysis);
+    this.storage.set(AVG_ANALISIS_KEY, avgAnalysis);
+
+    // Let's generate score values
+    var scoreAnalysis = this.calcScoreAnalysis(analyses);
+    this._scoreAnalysis.next(scoreAnalysis);
+    this.storage.set(SCORE_ANALISIS_KEY, scoreAnalysis);
+  }
+
+  clearLocalStorage () {
+    this.storage.clear()
+    .then((data) => {
+      console.log('😬 all cleared!', data);
+    })
+    .catch((err) => {
+      console.error('😩 error clearing storage!', err);
+    });
+
+    this._analyses.next(new Array<Analysis>());
+    const initAvgAnalysis = new Analysis ('', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    this._avgAnalysis.next(initAvgAnalysis);
+    var scoreAnalysis = this.calcScoreAnalysis(this._analyses.getValue());
+    this._scoreAnalysis.next(scoreAnalysis);
   }
 
   // Sets analysis with provided id as selected

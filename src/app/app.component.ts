@@ -18,14 +18,16 @@ import { FHService } from '../services/fh.service';
   templateUrl: 'app.html'
 })
 export class MyApp {
-  //rootPage: any = LoginPage;
-  rootPage: any = MainPage;
+  rootPage: any = LoginPage;
+  //rootPage: any = MainPage;
 
   constructor(platform: Platform, statusBar: StatusBar, splashScreen: SplashScreen, fhService: FHService) {
     platform.ready().then(() => {
       // Okay, so the platform is ready and our plugins are available.
       // Here you can do any higher level native things you might need.
-      statusBar.styleDefault();
+      //statusBar.backgroundColorByHexString('#00ff00');
+      //statusBar.styleBlackTranslucent();
+      statusBar.hide();
       splashScreen.hide();
     });
   }

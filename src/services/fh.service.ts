@@ -4,6 +4,10 @@ import { BehaviorSubject } from "rxjs/Rx";
 
 import {Md5} from 'ts-md5/dist/md5';
 
+// Model
+import { Dataset, DatasetItem } from '../model/dataset';
+import { SyncNotification } from '../model/sync-notification';
+
 // Services
 //import { StateService } from './state.service';
 
@@ -11,16 +15,171 @@ import * as $fh from 'fh-js-sdk';
 
 const INIT_EVENT = 'fhinit';
 
+const ANALYSES_DATASET_ID = 'ANALYSES_DATASET';
+
+const DEFAULT_SYNC_OPTIONS = { 
+  "sync_frequency": 5, // Sync every X seconds for the 'tasks' dataset
+  "has_custom_sync" : null,
+};
+
 @Injectable()
 export class FHService {
   private _ready: BehaviorSubject<boolean> = new BehaviorSubject(false);
   public readonly ready: Observable<boolean> = this._ready.asObservable();
 
-  constructor() {
+  private _syncNotification: BehaviorSubject<SyncNotification> = new BehaviorSubject(null);
+  public readonly syncNotification: Observable<SyncNotification> = this._syncNotification.asObservable();
 
+  private _datasets: BehaviorSubject<Map<string, Dataset<any>>> = new BehaviorSubject(new Map<string, Dataset<any>> ());
+  public readonly datasets: Observable<Map<string, Dataset<any>>> = this._datasets.asObservable();
+
+  constructor() {
     $fh.once(INIT_EVENT, (event) => {
       console.log('Service ready with url:', this.getUrl());
+      this.init();
       this._ready.next(true);
+    });
+  }
+
+  manageDataset(datasetId: string, options?, query_params?) {
+    //var query = { "eq": { "eventId": eventId } };
+    //var query_params = typeof eventId !== 'undefined'  ? query : {};
+    
+    // Extra params that will be sent to the back-end data handlers.
+    var meta_data = {token: 'token1'};
+
+    $fh.sync.manage(datasetId, options ? options : DEFAULT_SYNC_OPTIONS, query_params ? query_params : {}, meta_data, () => {
+      console.log('dataset ' + datasetId + ' is now managed by sync');
+      var datasets = this._datasets.getValue();
+      if (datasets) {
+        datasets.set(datasetId, new Dataset(datasetId));
+        this._datasets.next(datasets);
+      }
+    });
+  }
+
+  init() {
+    $fh.sync.init({
+      "do_console_log" : true,
+      "storage_strategy" : "dom"
+    });
+    
+    $fh.sync.notify((notification) => {
+      // The dataset that the notification is associated with
+      const dataset_id = notification.dataset_id;
+      
+      // The unique identifier that the notification is associated with.
+      // This will be the unique identifier for a record if the notification is related to an individual record,
+      // or the current hash of the dataset if the notification is associated with a full dataset
+      //  (for example, sync_complete)
+      const uid = notification.uid;
+
+      if ('sync_failed' == notification.code) {
+        let datasets = this._datasets.getValue();
+        datasets.set(dataset_id, new Dataset(dataset_id, false));
+        this._datasets.next(datasets);
+      } else if( 'sync_complete' == notification.code ) {
+        let datasets = this._datasets.getValue();
+        datasets.set(dataset_id, new Dataset(dataset_id, true));
+        this._datasets.next(datasets);
+      } else if( 'collision_detected' === notification.code ) {
+        var collisionError = notification.message;
+        console.log('collision @', notification, 'Error', collisionError);
+        /*$fh.sync.removeCollision(dataset_id, notification.message.hash, function (success) {
+          console.log('removeCollision success', success);
+        }, function (err) {
+          console.log('removeCollision err', err);
+        });*/
+      } else if( 'local_update_applied' === notification.code ) {
+        console.log('local change applied', notification);
+      } else if( 'remote_update_applied' === notification.code ) {
+        console.log('remote change applied', notification);
+      } else if( 'remote_update_failed' === notification.code ) {
+        console.log('remote change failed', notification);
+      }
+
+      // Let others do something about it
+      this._syncNotification.next(notification);
+    });
+  }
+
+  deleteItemFromDataset (datasetId: string, item: DatasetItem) {
+    return new Promise<any> ((resolve, reject) => {
+      $fh.sync.doDelete(
+        datasetId, item.code, 
+        (data) => {
+          resolve(data);
+        }), 
+        (error, _datasetId) => {
+          reject({datasetId: _datasetId, error: error});
+        }
+    });
+  }
+
+  getItemFromDataset (datasetId: string, id: string) {
+    return new Promise<any> ((resolve, reject) => {
+      $fh.sync.doRead(
+        datasetId, id, 
+        (data) => {
+          resolve(data);
+        }, 
+        (error, _datasetId) => {
+          reject({datasetId: _datasetId, error: error});
+        }
+      );
+    });
+  }
+
+  getAllItemsFromDataset (datasetId: string) {
+    return new Promise<any> ((resolve, reject) => {
+      $fh.sync.doList(
+        datasetId, 
+        (data) => {
+          resolve(data);
+        }, 
+        (error, _datasetId) => {
+          reject({datasetId: _datasetId, error: error});
+        }
+      );
+    });
+  }
+
+  updateItemIntoDataset (datasetId: string, item: DatasetItem) {
+    return new Promise<any> ((resolve, reject) => {
+      $fh.sync.doUpdate(
+        datasetId, item.code, item.data,
+        (data) => {
+          resolve(data);
+        }), 
+        (error, _datasetId) => {
+          reject({datasetId: _datasetId, error: error});
+        }
+    });
+  }
+
+  saveItemIntoDataset (datasetId: string, item: DatasetItem) {
+    return new Promise<any> ((resolve, reject) => {
+      $fh.sync.doCreate(
+        datasetId, item.data,
+        (data) => {
+          resolve(data);
+        }), 
+        (error, _datasetId) => {
+          reject({datasetId: _datasetId, error: error});
+        }
+    });
+  }
+
+  readItemFromDataset (datasetId: string, id: string) {
+    return new Promise<any> ((resolve, reject) => {
+      $fh.sync.doRead(
+        datasetId, id,
+        (data) => {
+          resolve(data);
+        }), 
+        (error, _datasetId) => {
+          reject({datasetId: _datasetId, error: error});
+        }
     });
   }
 
