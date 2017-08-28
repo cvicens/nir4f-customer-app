@@ -1,0 +1,13 @@
+<div class="chart" [style.height]="viewHeight + 'px'"  #chartElement>
+
+  <ion-row class="header-row">
+    <ion-col>{{title}}</ion-col>
+  </ion-row>
+  <ion-row class="chart-row">
+    <!--<ion-col><canvas class="chart-canvas" #barCanvas></canvas></ion-col>-->
+    <div class="chart-wrapper" >
+      <canvas class="chart-canvas" #canvas></canvas>
+    </div>
+  </ion-row>
+
+</div>

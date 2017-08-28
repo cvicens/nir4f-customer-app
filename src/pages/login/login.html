@@ -1,0 +1,35 @@
+<ion-content padding class="card-background-page">
+  <h2>NIR4F</h2>
+
+  <!--<p class="warning-message" *ngIf="submitAttempt" >Please fill out all details accurately</p>=-->
+  
+  <ion-list no-lines>
+  
+      <form [formGroup]="loginForm">
+  
+          <ion-item class="login-item">
+              <ion-label floating>Username Name</ion-label>
+              <ion-input formControlName="username" type="text"></ion-input>
+          </ion-item>
+  
+          <ion-item class="login-item" *ngIf="!loginForm.controls.username.valid && !loginForm.controls.username.pending && (loginForm.controls.username.dirty || submitAttempt)">
+                <p class="invalid">Sorry, username can not be empty!</p>
+          </ion-item>
+
+          <ion-item class="login-item">
+              <ion-label floating>Password</ion-label>
+              <ion-input formControlName="password" type="password"></ion-input>
+          </ion-item>
+
+           <ion-item class="login-item" *ngIf="!loginForm.controls.password.valid && !loginForm.controls.password.pending && (loginForm.controls.password.dirty || submitAttempt)">
+                <p class="invalid">Sorry, password can not be empty!</p>
+          </ion-item>
+    
+          <div padding>
+          <button ion-button color="primary" (click)="login()" block>Sign In</button>
+          </div>
+      </form>
+  
+  </ion-list>
+
+</ion-content>

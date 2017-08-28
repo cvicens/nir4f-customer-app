@@ -1,0 +1,31 @@
+    <div class="kpi"  #kpiElement> <!-- [style.height]="viewHeight + 'px'"  -->
+    <ion-row class="kpi-header">
+      <ion-col col-7 class="kpi-title">{{title}}</ion-col>
+      <ion-col col-5>
+        <div class="progress-outer" (click)="reduce()">
+          <div class="progress-inner" [style.background]="valueColor" [style.width]="value + '%'" >
+          </div>
+        </div>
+      </ion-col>
+    </ion-row>
+
+
+    <ion-row class="kpi-content" [style.color]="valueColor" >
+      <ion-col class="kpi-value">{{value}}<span class="kpi-sign">%</span></ion-col>
+    </ion-row>
+    </div>
+
+
+ <!--   <div class="kpi">
+  <div class="kpi-header">
+    <div class="kpi-title">{{title}}</div>
+    <div class="progress-outer">
+          <div class="progress-inner" [style.background]="valueColor" [style.width]="value + '%'">
+          </div>
+    </div>
+  </div>
+  <div class="kpi-content" [style.color]="valueColor"><span class="kpi-value">{{value}}</span><span class="kpi-sign">%</span></div>
+</div>-->
+ 
+
+

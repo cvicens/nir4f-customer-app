@@ -1,0 +1,37 @@
+timeline {
+    ion-scroll { white-space: nowrap; }
+    
+    .timeline {
+        height: 100%;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        background-color: map-get($colors, darker);
+        border: 10px solid;
+        border-color: map-get($colors, darkest);
+    }
+
+    .header-row {
+        display: flex;
+        flex: 1;
+
+        align-items: center!important;
+
+        color: map-get($colors, light);
+    }
+
+    .timeline-row {
+        display: flex;
+        flex: 5;
+        flex-direction: column;
+        justify-content: center;
+    }
+
+    .timeline-wrapper {
+        display: flex;
+        flex: 1;
+    }
+
+}

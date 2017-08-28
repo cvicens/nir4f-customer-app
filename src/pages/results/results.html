@@ -1,0 +1,31 @@
+
+
+<ion-split-pane>
+  <!--  our side menu  -->
+  <ion-menu [content]="results">
+    <ion-header>
+      <ion-toolbar>
+        <ion-title>Menu</ion-title>
+      </ion-toolbar>
+    </ion-header>
+    <ion-content>
+      <ion-list>
+        <ion-item *ngFor="let analysis of analyses" (click)="setAsCurrentAnalysis(analysis.id)">{{analysis.date}}</ion-item>
+      </ion-list>
+    </ion-content>
+
+    <ion-footer>
+      <ion-toolbar>
+        <ion-buttons end>
+          <button ion-button icon-right (click)="runScan()">
+            Scan
+            <ion-icon name="qr-scanner"></ion-icon>
+          </button>
+        </ion-buttons>
+      </ion-toolbar>
+    </ion-footer>
+  </ion-menu>
+
+  <!-- the main content -->
+  <ion-nav [root]="detail" main #results></ion-nav>
+</ion-split-pane>

@@ -1,0 +1,78 @@
+kpi {
+    .kpi {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+
+        background-color: map-get($colors, darker);
+        border: 10px solid;
+        border-color: map-get($colors, darkest);
+    }
+
+    .kpi-header {
+
+        margin: 0;
+
+        color: map-get($colors, light);
+
+        align-items: center!important;
+    }
+
+    .kpi-content {
+
+        //font-size: 250%;
+        //padding: 4px 0px 0px 4px; // t r b l
+        padding: 0;
+        text-align: center;
+        //align-items: baseline;
+
+        display: flex!important;
+        align-content: center!important;
+        align-items: center!important;
+
+        //background-color: yellowgreen; 
+        //font-size: 9em; 
+
+    }
+
+    .kpi-title {
+        text-align: left;
+        //background-color: yellowgreen; 
+        font-size: 2vh; 
+    }
+
+    .kpi-value {
+        font-weight: 900;
+        font-size: 10vw; 
+        //font-size: 1em; 
+        //background-color: blueviolet; 
+    }
+
+    .kpi-sign {
+        font-weight: 600;
+        font-size: 5vw; 
+        //background-color: red; 
+    }
+
+    .progress-outer {
+        width: 96%;
+        //margin: 10px 2%;
+        margin: 0px;
+        padding: 0px;
+        text-align: center;
+        background-color: map-get($colors, dark);
+        //border: 1px solid #dcdcdc;
+        color: #fff;
+        //border-radius: 20px;
+    }
+ 
+    .progress-inner {
+        min-width: 15%;
+        white-space: nowrap;
+        overflow: hidden;
+        padding: 5px;
+        //border-radius: 20px;
+        background-color: map-get($colors, primary);
+    }
+}

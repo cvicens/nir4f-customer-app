@@ -1,0 +1,40 @@
+<ion-header>
+  <ion-navbar>
+    <button ion-button menuToggle icon-only>
+      <ion-icon name='menu'></ion-icon>
+    </button>
+    <ion-title>Home</ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="card-background-page">
+  <h2>Red Hat MAP - Hello Test</h2>
+  <p>
+    This is just and example Ionic 2 app using the hello endpoint.
+    Please, type something (your name for instance) and hit the button
+  </p>
+
+  <ion-item>
+    <ion-label floating>Name</ion-label>
+    <ion-input type="text" [(ngModel)]="name"></ion-input>
+  </ion-item>
+
+  <div padding>
+    <button ion-button color="primary" (click)="sayHello()" block>Say Hello From The Cloud</button>
+  </div>
+
+<ion-card>
+
+  <ion-card-header>
+    Messages
+  </ion-card-header>
+
+  <ion-card-content>
+    <p>{{helloMessage}}</p>
+  </ion-card-content>
+
+</ion-card>
+
+ 
+
+</ion-content>

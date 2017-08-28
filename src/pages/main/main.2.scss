@@ -1,0 +1,201 @@
+page-main {
+    $board-button-background-color: map-get($colors, primary) !default;
+    $board-button-background-color-activated: color-shade($board-button-background-color) !default;
+    $button-board-opacity-hover: .8 !default;
+
+
+    scroll-content {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+    }
+ 
+    ion-grid {
+        padding: 0;
+        height: 100%;
+    }
+ 
+    .no-margin {
+        margin: 0;
+    }
+
+    .button-full {
+        margin: 0;
+    }
+
+    .button-board {
+        display: flex; 
+        flex-direction: column; 
+        justify-content: center;
+    }
+
+    .button-menu-icon {
+        display: inline-block;
+        font-size: 150%;
+        vertical-align: middle;
+        padding-right: 4px;
+    }
+    
+    .button-menu-text {
+        display: inline-block;
+        vertical-align: middle;
+    }
+
+    .button-menu-bar {
+        background-color: map-get($colors, dark);
+    }
+
+    .button-menu {
+        font-size: 100%;
+        //padding: 4px 0px 0px 4px; // t r b l
+        padding: 0;
+        border-top: 1px solid;
+        border-top-color: map-get($colors, dark);
+        border-left: 1px solid;
+        border-left-color: map-get($colors, dark);
+        border-bottom: 1px solid;
+        border-bottom-color: map-get($colors, dark);
+        border-right: 1px solid;
+        border-right-color: map-get($colors, dark);
+
+
+        opacity: $button-board-opacity-hover;
+
+        background: map-get($colors, darker); /* Old browsers */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, map-get($colors, dark)), color-stop(50%, map-get($colors, darker))) !important; /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top,  map-get($colors, dark) 0%, map-get($colors, darker) 100%) !important; /* Chrome10+,Safari5.1+ */
+        background: linear-gradient(to bottom,  map-get($colors, dark) 0%,map-get($colors, darker) 100%) !important; /* W3C */
+    }
+
+    .button-board-col-left-up {
+        font-size: 250%;
+        //padding: 4px 0px 0px 4px; // t r b l
+        padding: 0;
+        border-top: 1px solid;
+        border-top-color: map-get($colors, dark);
+        border-left: 1px solid;
+        border-left-color: map-get($colors, light);
+        border-bottom: 1px solid;
+        border-bottom-color: map-get($colors, dark);
+        border-right: 1px solid;
+        border-right-color: map-get($colors, dark);
+        height: calc(50vh);
+
+        opacity: $button-board-opacity-hover;
+
+        background: map-get($colors, dark); /* Old browsers */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, map-get($colors, primary)), color-stop(50%, map-get($colors, dark))) !important; /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top,  map-get($colors, primary) 0%, map-get($colors, dark) 100%) !important; /* Chrome10+,Safari5.1+ */
+        background: linear-gradient(to bottom,  map-get($colors, primary) 0%,map-get($colors, dark) 100%) !important; /* W3C */
+    }
+
+    .button-board-col-left-down {
+        font-size: 250%;
+        //padding: 4px 0px 2px 4px; // t r b l
+        padding: 0;
+        border-top: 1px solid;
+        border-top-color: map-get($colors, light);
+        border-left: 1px solid;
+        border-left-color: map-get($colors, light);
+        border-bottom: 1px solid;
+        border-bottom-color: map-get($colors, dark);
+        border-right: 1px solid;
+        border-right-color: map-get($colors, dark);
+        height: calc(50vh);
+
+        opacity: $button-board-opacity-hover;
+
+        background: map-get($colors, dark); /* Old browsers */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, map-get($colors, primary)), color-stop(50%, map-get($colors, dark))) !important; /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top,  map-get($colors, primary) 0%, map-get($colors, dark) 100%) !important; /* Chrome10+,Safari5.1+ */
+        background: linear-gradient(to bottom,  map-get($colors, primary) 0%,map-get($colors, dark) 100%) !important; /* W3C */
+    }
+
+    .button-board-col-right-up {
+        font-size: 250%;
+
+        //padding: 4px 2px 0px 4px; // t r b l
+        padding: 0;
+        border-top: 1px solid;
+        border-top-color: map-get($colors, dark);
+        border-left: 1px solid;
+        border-left-color: map-get($colors, light);
+        border-bottom: 1px solid;
+        border-bottom-color: map-get($colors, dark);
+        border-right: 1px solid;
+        border-right-color: map-get($colors, dark);
+        height: calc(50vh);
+
+        opacity: $button-board-opacity-hover;
+
+        background: map-get($colors, dark); /* Old browsers */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, map-get($colors, primary)), color-stop(50%, map-get($colors, dark))) !important; /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top,  map-get($colors, primary) 0%, map-get($colors, dark) 100%) !important; /* Chrome10+,Safari5.1+ */
+        background: linear-gradient(to bottom,  map-get($colors, primary) 0%,map-get($colors, dark) 100%) !important; /* W3C */
+    }
+
+    .button-board-col-right-down {
+        //padding: 4px 2px 2px 4px; // t r b l
+        padding: 0;
+        border: 1px solid magenta;
+        border-top: 1px solid;
+        border-top-color: map-get($colors, light);
+        border-left: 1px solid;
+        border-left-color: map-get($colors, light);
+        border-bottom: 1px solid;
+        border-bottom-color: map-get($colors, dark);
+        border-right: 1px solid;
+        border-right-color: map-get($colors, dark);
+        height: calc(50vh);
+
+        opacity: $button-board-opacity-hover;
+
+        background: map-get($colors, dark); /* Old browsers */
+        background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, map-get($colors, primary)), color-stop(50%, map-get($colors, dark))) !important; /* Chrome,Safari4+ */
+        background: -webkit-linear-gradient(top,  map-get($colors, primary) 0%, map-get($colors, dark) 100%) !important; /* Chrome10+,Safari5.1+ */
+        background: linear-gradient(to bottom,  map-get($colors, primary) 0%,map-get($colors, dark) 100%) !important; /* W3C */
+    }
+
+    .button-upper-row {
+        display: flex; 
+        flex: 1;
+        flex-direction: row; 
+        justify-content: center;
+        background-color: map-get($colors, darker); 
+    }
+
+    .button-lower-row {
+        display: flex; 
+        flex: 1;
+        flex-direction: row; 
+        justify-content: center;
+        background-color: map-get($colors, darker); 
+    }
+
+    .header-row {
+        flex: 0.5;
+    }
+
+    .button-row {
+        flex: 10;
+    }
+
+    .button-left {
+        //height: calc(50vh - 19px);
+        //width: calc(50vw - 20px);
+        //margin: 15x;
+        
+    }
+
+    .button-right {
+        //height: calc(50vh - (4px + 4px));
+        height: calc(50vh);
+        //width: calc(50vw - 20px);
+        //margin: 15x;
+        //border: 1px solid yellow;
+    }
+        
+    .button-inner { 
+        //height: 55vw; 
+    }
+}
