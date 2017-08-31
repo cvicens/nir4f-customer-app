@@ -1,5 +1,6 @@
 {
   "name": "ionic-app-base",
+  "version": "0.0.1",
   "author": "Ionic Framework",
   "homepage": "http://ionicframework.com/",
   "private": true,
@@ -7,10 +8,10 @@
     "clean": "ionic-app-scripts clean",
     "build": "ionic-app-scripts build",
     "ionic:build": "ionic-app-scripts build",
-    "ionic:serve": "ionic-app-scripts serve"
-  },
-  "config": {
-    "ionic_copy": "./scripts/copy.custom.config.js"
+    "ionic:serve": "ionic-app-scripts serve",
+    "electron": "electron .",
+    "electron dist": "electron .",
+    "ebuild":"node_modules/.bin/build"
   },
   "dependencies": {
     "@angular/common": "2.4.8",
@@ -38,6 +39,24 @@
   "devDependencies": {
     "@ionic/app-scripts": "1.1.4",
     "@types/d3": "4.10.0",
+    "@types/electron": "^1.6.10",
+    "electron": "^1.7.5",
+    "electron-builder": "^19.27.2",
     "typescript": "2.0.9"
+  },
+  "main": "electron/electron.js",
+  "config": {
+    "ionic_copy": "./scripts/copy.custom.config.js",
+    "ionic_bundler": "webpack",
+    "ionic_webpack": "./config/webpack.config.js"
+  },
+  "build": {
+    "appId": "com.lohanitech.ionic-electron-test",
+    "electronVersion": "1.6.2",
+    "asar":false,
+    "files": [
+      "www/**/*",
+      "electron/*"
+    ]
   }
 }
