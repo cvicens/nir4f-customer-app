@@ -19,6 +19,8 @@
     "ebuild":"node_modules/.bin/build"
   },
   "dependencies": {
+    "corser": "1.2.0",
+    "express": "3.3.4",
     "@angular/common": "2.4.8",
     "@angular/compiler": "2.4.8",
     "@angular/compiler-cli": "2.4.8",
