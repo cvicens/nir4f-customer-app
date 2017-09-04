@@ -41,7 +41,7 @@ export class FHService {
     });
   }
 
-  manageDataset(datasetId: string, options?, query_params?) {
+  manageDataset(datasetId: string, query_params?, options?) {
     //var query = { "eq": { "eventId": eventId } };
     //var query_params = typeof eventId !== 'undefined'  ? query : {};
     

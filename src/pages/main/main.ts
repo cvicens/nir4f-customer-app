@@ -32,8 +32,8 @@ export class MainPage {
 
   advisors: Array<Advisor> = null;
   analyses: Array<Analysis> = new Array<Analysis> ();
-  currentAnalysis: Analysis = new Analysis ('', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-  avgAnalysis: Analysis = new Analysis ('', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  currentAnalysis: Analysis = new Analysis ('', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  avgAnalysis: Analysis = new Analysis ('', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
   private pages: Array<{title: string, icon: string, component: any}>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private cd: ChangeDetectorRef, private stateService: StateService) {

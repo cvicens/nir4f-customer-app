@@ -29,7 +29,7 @@ export class ChartComponent  {
   chart: any;
 
   analyses: Array<Analysis> = null;
-  currentAnalysis: Analysis = new Analysis ('', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  currentAnalysis: Analysis = new Analysis ('', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
 
   constructor(private cd: ChangeDetectorRef, private stateService: StateService) {
     this.stateService.analyses.subscribe(value => {

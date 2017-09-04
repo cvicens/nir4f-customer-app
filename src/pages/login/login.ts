@@ -22,10 +22,26 @@ export class LoginPage {
 
   message: string = '';
 
-  constructor(public navCtrl: NavController, public toastCtrl: ToastController, public formBuilder: FormBuilder, private fhService: FHService, private stateService: StateService) {
+  constructor(public navCtrl: NavController, public toastCtrl: ToastController, public formBuilder: FormBuilder, private stateService: StateService) {
     this.loginForm = formBuilder.group({
         username: ['', Validators.compose([Validators.required])],
         password: ['', Validators.compose([Validators.required])]
+    });
+  }
+
+  ngOnInit () {
+    this.stateService.loginStatus.subscribe(value => {
+      console.log('🔥 LoginPage: loginStatus', value);
+      if (value) {
+        if ('SUCCESS' === value) {
+          this.message = 'Login OK';
+          this.navCtrl.setRoot(MainPage);
+        } else if ('ERROR' === value) {
+          this.presentToast('User/Password wrong or not found');
+        } else {
+          this.presentToast('Unkwon error!');
+        }
+      }
     });
   }
 
@@ -38,21 +54,7 @@ export class LoginPage {
       this.message = 'Before calling...';
 
       //this.fhService.login(this.loginForm.value.username, this.loginForm.value.password)
-      this.fhService.login(this.loginForm.value.username, this.loginForm.value.password)
-      .then( (result) => {
-        // Lets update the state of the app...
-        this.stateService.updateUsername(this.loginForm.value.username);
-        this.stateService.updateDepartment(this.loginForm.value.department);
-        this.stateService.updateUserRoles(result.roles);
-        //console.log('result', result);
-        this.message = 'Login OK';
-        this.navCtrl.setRoot(MainPage);
-      })
-      .catch( (err) => {
-        console.log(err);
-        //this.message = JSON.stringify(err);
-        this.presentToast('User/Password wrong or not found');
-      });
+      this.stateService.login(this.loginForm.value.username, this.loginForm.value.password);
     } 
 
   }

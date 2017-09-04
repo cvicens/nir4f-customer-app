@@ -10,6 +10,7 @@ function makeid (n) {
 
 export class Analysis {
   id: string;
+  userId: string;
   date: string;
   dm: number; // Dry Matter
   cp: number; // Crude Protein
@@ -25,6 +26,7 @@ export class Analysis {
   comments: Array<string>;
 
   constructor(
+    userId: string,
     date?: string,
     dm?: number, // Dry Matter
     cp?: number, // Crude Protein
@@ -37,6 +39,7 @@ export class Analysis {
     ph?: number,
     la?: number) {
     this.id = makeid(24);
+    this.userId = userId;
     this.date = date;
     this.dm = dm;
     this.cp = cp;
