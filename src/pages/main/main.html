@@ -65,12 +65,19 @@
     
           <ion-row class="details-row-2"  align-items-stretch #chartDashBoardRow2>
 
-            <ion-col col-12 no-padding><chart parentSize [dataSource]="'currentAnalysis'" [title]="'Last Analysis'" #chartComponentRow1> </chart></ion-col>
+            <ion-col col-12 no-padding><chart parentSize [dataSource]="'currentAnalysis'" [title]="'Current Analysis'" #chartComponentRow1> </chart></ion-col>
 
           </ion-row>
         </ion-col>
 
-      
+        <ion-col col-10 class="button-board" *ngIf="showPage === 'SHARED'">
+            
+                      
+            <page-shared-analyses parentSize [showHeader]="'false'" ></page-shared-analyses>
+
+            
+          
+        </ion-col>
  
       </ion-row>
       

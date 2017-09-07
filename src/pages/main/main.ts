@@ -5,16 +5,18 @@ import { NavController, NavParams, ActionSheetController, FabContainer } from 'i
 import { KpiComponent } from '../../components/kpi/kpi.component';
 import { ChartComponent } from '../../components/chart/chart.component';
 
+import { SharedAnalysesPage } from '../shared-analyses/shared-analyses';
 import { ResultsPage } from '../results/results';
 import { ResultDetailPage } from '../results/result-detail';
 import { HomePage } from '../home/home';
 
 // Services
-import { StateService } from '../../services/state.service';
+import { StateService, SHARED_ANALYSES_KEY } from '../../services/state.service';
 
 // Model
 import { Analysis } from '../../model/analysis';
 import { Advisor } from '../../model/advisor';
+import { SharedAnalysis } from '../../model/shared-analysis';
 
 @Component({
   selector: 'page-main',
@@ -30,10 +32,12 @@ export class MainPage {
 
   showPage: string = 'DASHBOARD';
 
+  sharedAnalyses: Array<SharedAnalysis> = new Array<SharedAnalysis>();
+
   advisors: Array<Advisor> = null;
   analyses: Array<Analysis> = new Array<Analysis> ();
-  currentAnalysis: Analysis = new Analysis ('', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
-  avgAnalysis: Analysis = new Analysis ('', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  currentAnalysis: Analysis = new Analysis ('', 0, 0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+  avgAnalysis: Analysis = new Analysis ('', 0, 0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
   private pages: Array<{title: string, icon: string, component: any}>;
 
   constructor(public navCtrl: NavController, public navParams: NavParams, public actionSheetCtrl: ActionSheetController, private cd: ChangeDetectorRef, private stateService: StateService) {
@@ -42,7 +46,8 @@ export class MainPage {
     // used for an example of ngFor and navigation
     this.pages = [
       { title: 'Home', icon: 'home', component: HomePage },
-      { title: 'Analyses', icon: 'stats', component: ResultDetailPage }
+      { title: 'Analyses', icon: 'stats', component: ResultDetailPage },
+      { title: 'Shared', icon: 'stats', component: SharedAnalysesPage }
     ];
     
   }
@@ -50,8 +55,10 @@ export class MainPage {
   openPage(page) {
     if (page.title === 'Home') {
       this.showPage = 'DASHBOARD';
-    } else {
+    } else if (page.title === 'Analyses') {
       this.showPage = 'DETAILS';
+    } else {
+      this.showPage = 'SHARED';
     }
     console.log('Show page', this.showPage);
 
@@ -87,6 +94,22 @@ export class MainPage {
     this.stateService.currentAnalysis.subscribe(value => {
       this.currentAnalysis = value;
       console.log('🔥 MainPage: this.currentAnalysis', this.currentAnalysis);
+    });
+
+    this.stateService.datasets.subscribe(value => {
+      console.log('value pre-check', value);
+      if (value) {
+        console.log('value', value.get(SHARED_ANALYSES_KEY));
+        if (value.get(SHARED_ANALYSES_KEY) && value.get(SHARED_ANALYSES_KEY).initialized) {
+          this.sharedAnalyses.length = 0;
+          value.get(SHARED_ANALYSES_KEY).data.forEach((element) => {
+            this.sharedAnalyses.push(element);
+          })
+
+          console.log('MAIN!!! this.sharedAnalyses >>>>> ', this.sharedAnalyses);
+          this.cd.detectChanges();
+        }
+      }
     });
   }
 

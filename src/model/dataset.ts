@@ -1,11 +1,13 @@
-export class Dataset<T> extends Array<T> {
+export class Dataset<T> {
   id: string = null;
   online: boolean = false;
+  initialized: boolean = false;
+  data: Array<T> = new Array<T> ();
 
   constructor(id: string, online?: boolean) {
-    super();
     this.id = id;
     this.online = online ? online : false;
+    this.initialized = false;
   }
 }
 

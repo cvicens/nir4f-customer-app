@@ -12,6 +12,8 @@ import { HorizontalTimelineComponent } from '../components/horizontal-timeline/h
 
 import { MainPage } from '../pages/main/main';
 
+import { SharedAnalysesPage } from '../pages/shared-analyses/shared-analyses';
+
 import { AboutPage } from '../pages/about/about';
 import { ContactPage } from '../pages/contact/contact';
 import { HomePage } from '../pages/home/home';
@@ -42,6 +44,7 @@ import { ParentSizeDirective } from '../directives/parent-size.directive';
     TimelineComponent,
     HorizontalTimelineComponent,
     MainPage,
+    SharedAnalysesPage,
     LoginPage,
     AboutPage,
     ContactPage,
@@ -61,6 +64,7 @@ import { ParentSizeDirective } from '../directives/parent-size.directive';
     KpiComponent,
     ChartComponent,
     MainPage,
+    SharedAnalysesPage,
     LoginPage,
     AboutPage,
     ContactPage,

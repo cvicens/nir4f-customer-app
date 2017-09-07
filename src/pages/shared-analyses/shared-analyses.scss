@@ -1,0 +1,74 @@
+
+page-shared-analyses {
+    
+
+    .shared-analyses-generic-text {
+        color: map-get($colors, light);
+    }
+
+    .shared-analyses-ion-card-title {
+        color: map-get($colors, light);
+    }
+
+    .shared-analyses-ion-item {
+        background-color: map-get($colors, darkest);
+        border-bottom: 0.55px solid map-get($colors, darkest);
+    }
+
+    .shared-analyses-ion-item-sliding {
+        background-color: map-get($colors, darkest); 
+    }
+
+    .shared-analyses-ion-card {
+        background-color: map-get($colors, darker); 
+    }
+
+    .shared-analyses-card-background-page {
+        background-color: map-get($colors, darkest); 
+    }
+
+    .shared-analyses-ion-note {
+        color: map-get($colors, light); 
+    }
+
+    .card-header {
+        padding-left: 16px;
+        padding-top: 10px;
+        padding-right: 16px;
+    }
+
+    .card-header-avatar {
+        padding-left: 0px;
+    }
+
+    .kpi-content {
+        
+        //font-size: 250%;
+        //padding: 4px 0px 0px 4px; // t r b l
+        padding: 0;
+        text-align: center;
+        //align-items: baseline;
+
+        display: flex!important;
+        align-content: center!important;
+        align-items: center!important;
+
+        //background-color: yellowgreen; 
+        //font-size: 9em; 
+
+    }
+
+    .kpi-value {
+        font-weight: 900;
+        font-size: 15vw; 
+        //font-size: 1em; 
+        //background-color: blueviolet; 
+    }
+
+    .kpi-sign {
+        font-weight: 600;
+        font-size: 10vw; 
+        //background-color: red; 
+    }
+
+}

@@ -12,6 +12,8 @@ export class Analysis {
   id: string;
   userId: string;
   date: string;
+  x: number;
+  y: number;
   dm: number; // Dry Matter
   cp: number; // Crude Protein
   dv: number; // D Value
@@ -24,9 +26,12 @@ export class Analysis {
   la: number; // Lactic Acid
   sharedWith: Array<string>;
   comments: Array<string>;
+  advisorAnswer: string; 
 
   constructor(
     userId: string,
+    x?: number,
+    y?: number,
     date?: string,
     dm?: number, // Dry Matter
     cp?: number, // Crude Protein
@@ -40,6 +45,8 @@ export class Analysis {
     la?: number) {
     this.id = makeid(24);
     this.userId = userId;
+    this.x = x;
+    this.y = y;
     this.date = date;
     this.dm = dm;
     this.cp = cp;

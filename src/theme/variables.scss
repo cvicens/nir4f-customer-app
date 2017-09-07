@@ -33,19 +33,28 @@ $font-path: "../assets/fonts";
 
 $colors: (
   primary:    #b4bd34,
+  primary_drk:#899027,
   secondary:  #32db64,
   danger:     #f53d3d,
   light:      #f4f4f4,
   dark:       #56565b,
   darker:     #323232,
   darkest:    #1e1e1e,
-  pale:       #ffcccc
+  pale:       #ffcccc,
+  answer:     #30b1f5,
+  unread:     #c8c7cd
 );
+
+$tabs-background: map-get($colors, darker);
+
+$list-border-color: map-get($colors, darkest);
+$list-background-color: map-get($colors, darkest);
 
 $select-ios-icon-color: map-get($colors, light);
 $select-md-icon-color:  map-get($colors, light);
 
-$toolbar-background: #cd2027;
+$toolbar-background: map-get($colors, primary_drk);;
+
 $item-ios-divider-background: #ff9696;
 $item-md-divider-background: #ff9696;
 

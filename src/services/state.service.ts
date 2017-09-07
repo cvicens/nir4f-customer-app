@@ -1,4 +1,4 @@
-import { ToastController } from 'ionic-angular';
+import { ToastController, AlertController } from 'ionic-angular';
 
 import { Storage } from '@ionic/storage';
 
@@ -16,7 +16,7 @@ import { LiveQuiz } from '../model/live-quiz';
 import { Question } from '../model/question';
 import { Agenda } from '../model/agenda';
 
-import { DatasetItem } from '../model/dataset';
+import { Dataset, DatasetItem } from '../model/dataset';
 import { Analysis } from '../model/analysis';
 import { SharedAnalysis } from '../model/shared-analysis';
 import { Advisor } from '../model/advisor';
@@ -25,11 +25,30 @@ const CURRENT_ANALISIS_KEY = 'currentAnalysis';
 const AVG_ANALISIS_KEY = 'avgAnalysis';
 const SCORE_ANALISIS_KEY = 'scoreAnalysis';
 
-const ANALYSES_KEY = 'analyses';
-const SHARED_ANALYSES_KEY = 'shared_analyses';
+export const ANALYSES_KEY = 'analyses';
+export const SHARED_ANALYSES_KEY = 'shared_analyses';
+
+function extractDataFromDataSyncItems(items) {
+  let data = new Array<any>()
+  for(var key in items){
+    if(items.hasOwnProperty(key)){
+      // Unique Id of the record, used for read, update & delete operations (string).
+      data.push({uid: key, hash: items[key].hash, data: items[key].data});
+    }
+  }
+
+  return data;
+}
+
+function extractDataFromDataSyncItem(uid, item) {
+  return {uid: uid, hash: item.hash, data: item.data};
+}
 
 @Injectable()
 export class StateService implements OnInit, OnDestroy {
+  private _datasets: BehaviorSubject<Map<string, Dataset<any>>> = new BehaviorSubject(new Map<string, Dataset<any>> ());
+  public readonly datasets: Observable<Map<string, Dataset<any>>> = this._datasets.asObservable();
+
   private _eventsForToday: BehaviorSubject<Array<Event>> = new BehaviorSubject(new Array<Event>());
   public readonly eventsForToday: Observable<Array<Event>> = this._eventsForToday.asObservable();
 
@@ -78,6 +97,9 @@ export class StateService implements OnInit, OnDestroy {
   private _userId: BehaviorSubject<string> = new BehaviorSubject(null);
   public readonly userId: Observable<string> = this._userId.asObservable();
 
+  private _username: BehaviorSubject<string> = new BehaviorSubject(null);
+  public readonly username: Observable<string> = this._username.asObservable();
+
   private _userDepartment: BehaviorSubject<string> = new BehaviorSubject(null);
   public readonly userDepartment: Observable<string> = this._userDepartment.asObservable();
 
@@ -114,7 +136,7 @@ export class StateService implements OnInit, OnDestroy {
   stopQuizConnection;
   lastQuestionConnection;
 
-  constructor(public toastCtrl: ToastController, private storage: Storage, private fhService: FHService, private socketService: SocketService) {
+  constructor(public toastCtrl: ToastController, public alertCtrl: AlertController, private storage: Storage, private fhService: FHService, private socketService: SocketService) {
     console.log('New StateService!!!!');
     this.socketService.ready.subscribe(ready => {
       if (ready) {
@@ -140,7 +162,7 @@ export class StateService implements OnInit, OnDestroy {
     this._advisors.next(dummyAdvisors);
 
     // Init data
-    const initAvgAnalysis = new Analysis ('', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    const initAvgAnalysis = new Analysis ('', 0, 0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     this._avgAnalysis.next(initAvgAnalysis);
 
     // Get local data... test
@@ -200,13 +222,23 @@ export class StateService implements OnInit, OnDestroy {
       if (notification) {
 
         if( 'sync_complete' == notification.code ) {
-          this.fhService.getAllItemsFromDataset(notification.dataset_id)
-          .then((items) => {
-            console.log('sync_complete : ', items);
-          })
-          .catch((err) => {
-            console.error('getAllItemsFromDataset err:', err);
-          });
+          const __datasets = this._datasets.getValue();
+          console.log('sync_complete dataset_id:', notification.dataset_id, 'initialized:', __datasets.get(notification.dataset_id).initialized);
+          if (!__datasets.get(notification.dataset_id).initialized) {
+            this.fhService.getAllItemsFromDataset(notification.dataset_id)
+            .then((items) => {
+              console.log('sync_complete : ', items);
+              let __dataset = __datasets.get(notification.dataset_id);
+              __dataset.initialized = true;
+              var aux = extractDataFromDataSyncItems(items);
+              __dataset.data = aux;
+              __datasets.set(notification.dataset_id, __dataset);
+              this._datasets.next(__datasets);
+            })
+            .catch((err) => {
+              console.error('getAllItemsFromDataset err:', err);
+            });
+          }
         }
         else if( 'local_update_applied' === notification.code ) {
           this.fhService.getAllItemsFromDataset(notification.dataset_id)
@@ -220,8 +252,36 @@ export class StateService implements OnInit, OnDestroy {
         else if( 'remote_update_failed' === notification.code ) {
           const errorMsg = notification.message;
           console.log('remote_update_failed : ', errorMsg);
+        } 
+        else if ('delta_received' === notification.code) {
+          console.log('delta_received', notification);
         }
-        
+        else if ('record_delta_received' === notification.code) {
+          const __datasets = this._datasets.getValue();
+          console.log('record_delta_received', notification);
+          this.fhService.getItemFromDataset(notification.dataset_id, notification.uid)
+          .then((data) => {
+            console.log('record_delta_received data', data, 'dataset_id', notification.dataset_id);
+            if (notification.dataset_id === SHARED_ANALYSES_KEY) {
+              console.log('New Advisor Answer! ' + data);
+              //this.presentToast('New Advisor Answer! ' + data.data.analysis.advisorAnswer);
+              // TODO separate shared analysis requests from responses... this if is really ugly
+              if (!data.data.answered) {
+                this.showAlert('New Advisor Request from ' + data.data.username, data.data.analysis.advisorAnswer);
+              } else {
+                this.showAlert('New Advisor Answer from ' + data.data.advisorName, data.data.analysis.advisorAnswer);
+              }
+            }
+
+            let __dataset = __datasets.get(notification.dataset_id);
+            __dataset.data.push(extractDataFromDataSyncItem(notification.uid, data));
+            __datasets.set(notification.dataset_id, __dataset);
+            this._datasets.next(__datasets);
+          })
+          .catch((err) => {
+            console.error('record_delta_received err', err);
+          });
+        }
       }
     });
   }
@@ -365,6 +425,15 @@ export class StateService implements OnInit, OnDestroy {
     this.socketService.nextQuestion(this._eventId.getValue(), this._quizId.getValue());
   }
 
+  manageDataset(datasetId: string, query_params?, options?) {
+    this.fhService.manageDataset(datasetId, query_params, options);
+    var datasets = this._datasets.getValue();
+    if (datasets) {
+      datasets.set(datasetId, new Dataset(datasetId));
+      this._datasets.next(datasets);
+    }
+  }
+
   isUserInRole(role) {
     return this._userRoles.getValue().find((element) => {return element === role}) != null ? true : false;
   }
@@ -376,6 +445,7 @@ export class StateService implements OnInit, OnDestroy {
       console.log('login result', result);
       // Lets update the state of the app...
       this._userId.next(result.userId);
+      this._username.next(result.username);
       this._userDepartment.next(result.department);
       this._userRoles.next(result.roles);
       this._loginStatus.next('SUCCESS');
@@ -383,11 +453,11 @@ export class StateService implements OnInit, OnDestroy {
       // Advisors
       this._advisors.next(result.advisors);
 
-      this.fhService.manageDataset(ANALYSES_KEY, {eq: {userId: this._userId.getValue()}});
+      this.manageDataset(ANALYSES_KEY, {eq: {userId: this._userId.getValue()}});
       if(this.isUserInRole('ADVISOR')) {
-        this.fhService.manageDataset(SHARED_ANALYSES_KEY, {eq: {advisorId: this._userId.getValue()}});
+        this.manageDataset(SHARED_ANALYSES_KEY, {eq: {advisorId: this._userId.getValue()}});
       } else {
-        this.fhService.manageDataset(SHARED_ANALYSES_KEY, {eq: {userId: this._userId.getValue()}});
+        this.manageDataset(SHARED_ANALYSES_KEY, {eq: {userId: this._userId.getValue()}});
       }
     })
     .catch( (err) => {
@@ -426,7 +496,12 @@ export class StateService implements OnInit, OnDestroy {
 
   randomAnalysis () {
     const date = new Date().toUTCString();
-    var newAnalisys = new Analysis(this._userId.getValue(), date, this.random(60, 70), this.random(10, 15), 
+
+    //54.138481, -1.828101
+    const x = -1.569922 + this.random(-0.50, 0.5);
+    const y = 54.138481 + this.random(-0.50, 0.5);
+
+    var newAnalisys = new Analysis(this._userId.getValue(),x, y, date, this.random(60, 70), this.random(10, 15), 
       this.random(30, 60), this.random(50, 60), this.random(1, 3), 
       this.random(5, 8), this.random(4, 9), this.random(5, 6), 
       this.random(4, 9), this.random(2, 3));
@@ -535,7 +610,7 @@ export class StateService implements OnInit, OnDestroy {
     });
 
     this._analyses.next(new Array<Analysis>());
-    const initAvgAnalysis = new Analysis ('', '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+    const initAvgAnalysis = new Analysis ('', 0, 0, '', 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
     this._avgAnalysis.next(initAvgAnalysis);
     var scoreAnalysis = this.calcScoreAnalysis(this._analyses.getValue());
     this._scoreAnalysis.next(scoreAnalysis);
@@ -550,33 +625,40 @@ export class StateService implements OnInit, OnDestroy {
     }
   }
 
-  // Method to share this analysis with a 
+  // Method to share this analysis with an advisor
   shareAnalysis(analysisId: string, advisorId: string) {
     var analyses = this._analyses.getValue();
     const analysis = analyses.find((element) => {return element.id === analysisId});
     const advisor = this._advisors.getValue().find((element) => {return element.id === advisorId});
     if (analysis && advisor) {
-      const sharedAnalysis = new SharedAnalysis(analysisId, this._userId.getValue(), advisorId);
+      const sharedAnalysis = new SharedAnalysis(analysisId, this._userId.getValue(), this._username.getValue(), advisorId, advisor.firstName + ' ' + advisor.lastName, analysis);
       this.fhService.saveItemIntoDataset(SHARED_ANALYSES_KEY, new DatasetItem(sharedAnalysis.id, sharedAnalysis))
       .then((data) => {
         console.log('saveItemIntoDataset data', data);
-
-        this.fhService.getItemFromDataset(SHARED_ANALYSES_KEY, data.uid)
-        .then((data) => {
-          console.log('shared analysis from dataset', data);
-        })
-        .catch((err) => {
-          console.error('shared analysis error!', err);
-        });
       })
       .catch((err) => {
         console.error('saveItemIntoDataset err', err);
       });
-      
 
       // TODO: call a service to efectively share it
       this.presentToast('Analysis shared correctly with ' + advisor.firstName + ' ' + advisor.lastName);
     }
+  }
+
+  // Send answer for a shared analysis
+  answerSharedAnalysis(uid: string, updatedSharedAnalysis: SharedAnalysis, answer: string) {
+    updatedSharedAnalysis.answered = true;
+    updatedSharedAnalysis.analysis.advisorAnswer = answer;
+    
+    this.fhService.updateItemIntoDataset(SHARED_ANALYSES_KEY, new DatasetItem(uid, updatedSharedAnalysis))
+    .then((data) => {
+      console.log('updateItemIntoDataset data', data);
+      this.presentToast('SharedAnalysis updated correctly');
+    })
+    .catch((err) => {
+      console.error('updateItemIntoDataset err', err);
+    });
+    
   }
 
   presentToast(message) {
@@ -585,5 +667,22 @@ export class StateService implements OnInit, OnDestroy {
       duration: 3000
     });
     toast.present();
+  }
+
+  showAlert (title, subtitle) {
+    let alert = this.alertCtrl.create({
+      title: title,
+      subTitle: subtitle,
+      buttons: ['OK']
+    });
+    alert.present();
+  }
+
+  updateSharedAnalysiskk (updatedSharedAnalysis) {
+    const sharedAnalyses = this._sharedAnalyses.getValue();
+    const updatedSharedAnalyses = sharedAnalyses.map((element) => {
+      return element.id === updatedSharedAnalysis.id ? updatedSharedAnalysis : element;
+    });
+    this._sharedAnalyses.next(updatedSharedAnalyses);
   }
 }

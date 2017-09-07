@@ -35,7 +35,14 @@ export class LoginPage {
       if (value) {
         if ('SUCCESS' === value) {
           this.message = 'Login OK';
-          this.navCtrl.setRoot(MainPage);
+          
+
+          if (this.stateService.isUserInRole('ADVISOR')) {
+            this.navCtrl.setRoot(TabsPage);
+          } else {
+            this.navCtrl.setRoot(MainPage);
+          }
+
         } else if ('ERROR' === value) {
           this.presentToast('User/Password wrong or not found');
         } else {

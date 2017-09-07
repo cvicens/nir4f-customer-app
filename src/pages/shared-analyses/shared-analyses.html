@@ -1,0 +1,79 @@
+<ion-header *ngIf="showHeader">
+  <ion-navbar>
+    <button ion-button menuToggle icon-only>
+      <ion-icon name='menu'></ion-icon>
+    </button>
+    <ion-title>Shared Analyses </ion-title>
+  </ion-navbar>
+</ion-header>
+
+<ion-content padding class="shared-analyses-card-background-page">
+
+  <ion-list>
+    <!--<ion-item *ngFor="let sharedAnalysis of sharedAnalyses" >{{sharedAnalysis.analysis.date}} / {{sharedAnalysis.userId}}</ion-item>-->
+
+    <ion-item-sliding *ngFor="let sharedAnalysis of sharedAnalyses" class="shared-analyses-ion-item-sliding" #item>
+        <ion-item class="shared-analyses-ion-item"  >
+            <ion-card class="shared-analyses-ion-card">
+                
+            <ion-row class="card-header">
+                <ion-col col-2 class="card-header-avatar">
+                    <ion-avatar item-start>
+                        <img src="assets/avatar-01.png">
+                    </ion-avatar>
+                </ion-col>
+                <ion-col col-10>
+                    <h2 class="shared-analyses-generic-text">{{sharedAnalysis.data.username}}</h2>
+                    <p>{{sharedAnalysis.data.date}}</p>
+                </ion-col>
+            </ion-row>
+            
+            <ion-row class="kpi-content" [style.color]="getValueColor(sharedAnalysis.data.score)" >
+                <ion-col class="kpi-value">{{round(sharedAnalysis.data.score)}}<span class="kpi-sign">&nbsp;pts</span></ion-col>
+            </ion-row>
+
+            <ion-card-content>
+              
+              <ion-card-title class="shared-analyses-ion-card-title">
+                Scan location
+              </ion-card-title>
+              <div #map id="map" [attr.x]="sharedAnalysis.data.analysis.x" [attr.y]="sharedAnalysis.data.analysis.y" [style.height]="'200px'"></div>
+              
+            </ion-card-content>
+    
+            <ion-row>
+                <ion-col>
+                  <button ion-button icon-left clear small>
+                    <ion-icon name="thumbs-up"></ion-icon>
+                    <div>12 Likes</div>
+                  </button>
+                </ion-col>
+                <ion-col>
+                  <button ion-button icon-left clear small>
+                    <ion-icon name="text"></ion-icon>
+                    <div>4 Comments</div>
+                  </button>
+                </ion-col>
+                <ion-col center text-center>
+                  <ion-note class="shared-analyses-ion-note">
+                    11h ago
+                  </ion-note>
+                </ion-col>
+              </ion-row>
+          </ion-card>
+
+        </ion-item>
+
+        <ion-item-options side="left">
+          <button ion-button color="answer" (click)="answer(sharedAnalysis)">Answer</button>
+        </ion-item-options>
+    
+        <ion-item-options side="right">
+          <button ion-button color="unread" (click)="unread(sharedAnalysis)">Unread</button>
+        </ion-item-options>
+      </ion-item-sliding>
+
+    
+  </ion-list> 
+
+</ion-content>
