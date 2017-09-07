@@ -47,7 +47,7 @@ export class MainPage {
     this.pages = [
       { title: 'Home', icon: 'home', component: HomePage },
       { title: 'Analyses', icon: 'stats', component: ResultDetailPage },
-      { title: 'Shared', icon: 'stats', component: SharedAnalysesPage }
+      //{ title: 'Shared', icon: 'stats', component: SharedAnalysesPage }
     ];
     
   }
