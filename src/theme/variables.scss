@@ -45,6 +45,13 @@ $colors: (
   unread:     #c8c7cd
 );
 
+$item-ios-padding-right: 8px;
+$item-ios-padding-left: 8px;
+$item-md-padding-right: 8px;
+$item-md-padding-left: 8px;
+$item-wp-padding-right: 8px;
+$item-wp-padding-left: 8px;
+
 $tabs-background: map-get($colors, darker);
 
 $list-border-color: map-get($colors, darkest);

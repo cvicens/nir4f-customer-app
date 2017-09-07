@@ -10956,7 +10956,7 @@ ion-card-content {
 .item.item-ios .checkbox-ios {
   position: static;
   display: block;
-  margin: 8px 16px 8px 2px;
+  margin: 8px 8px 8px 2px;
 }
 
 .item.item-ios .checkbox-ios[item-right] {
@@ -11265,7 +11265,7 @@ ion-card-content {
 .item.item-wp .checkbox-wp {
   position: static;
   display: block;
-  margin: 9px 16px 9px 4px;
+  margin: 9px 8px 9px 4px;
 }
 
 .item.item-wp .checkbox-wp[item-right] {
@@ -12068,7 +12068,7 @@ ion-datetime {
 }
 
 .datetime-ios {
-  padding: 11px 8px 11px 16px;
+  padding: 11px 4px 11px 8px;
 }
 
 .datetime-ios .datetime-placeholder {
@@ -12076,7 +12076,7 @@ ion-datetime {
 }
 
 .datetime-md {
-  padding: 13px 8px 13px 16px;
+  padding: 13px 4px 13px 8px;
 }
 
 .datetime-md .datetime-placeholder {
@@ -12084,7 +12084,7 @@ ion-datetime {
 }
 
 .datetime-wp {
-  padding: 13px 8px 13px 16px;
+  padding: 13px 4px 13px 8px;
   min-width: 45%;
 }
 
@@ -16380,14 +16380,14 @@ input.text-input:-webkit-autofill {
 }
 
 .text-input-ios {
-  margin: 11px 8px 11px 0;
+  margin: 11px 4px 11px 0;
   padding: 0;
-  width: calc(100% - 8px);
+  width: calc(100% - 4px);
 }
 
 .input-ios .inset-input {
-  margin: 5.5px 16px 5.5px 0;
-  padding: 5.5px 8px 5.5px 8px;
+  margin: 5.5px 8px 5.5px 0;
+  padding: 5.5px 4px 5.5px 4px;
 }
 
 .item-ios.item-label-stacked .text-input,
@@ -16395,7 +16395,7 @@ input.text-input:-webkit-autofill {
   margin-top: 8px;
   margin-bottom: 8px;
   margin-left: 0;
-  width: calc(100% - 8px);
+  width: calc(100% - 4px);
 }
 
 .item-ios.item-label-stacked .label-ios + .input + .cloned-input,
@@ -16420,20 +16420,20 @@ input.text-input:-webkit-autofill {
 
 .input-ios .text-input-clear-icon {
   background-image: url("data:image/svg+xml;charset=utf-8,<svg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20512%20512'><path%20fill='rgba(0,%200,%200,%200.5)'%20d='M403.1,108.9c-81.2-81.2-212.9-81.2-294.2,0s-81.2,212.9,0,294.2c81.2,81.2,212.9,81.2,294.2,0S484.3,190.1,403.1,108.9z%20M352,340.2L340.2,352l-84.4-84.2l-84,83.8L160,339.8l84-83.8l-84-83.8l11.8-11.8l84,83.8l84.4-84.2l11.8,11.8L267.6,256L352,340.2z'/></svg>");
-  right: 8px;
+  right: 4px;
   width: 30px;
   background-size: 18px;
 }
 
 .text-input-md {
-  margin: 13px 8px 13px 8px;
+  margin: 13px 4px 13px 4px;
   padding: 0;
-  width: calc(100% - 8px - 8px);
+  width: calc(100% - 4px - 4px);
 }
 
 .input-md .inset-input {
-  margin: 6.5px 16px 6.5px 16px;
-  padding: 6.5px 8px 6.5px 8px;
+  margin: 6.5px 8px 6.5px 8px;
+  padding: 6.5px 4px 6.5px 4px;
 }
 
 .item-md.item-input.input-has-focus .item-inner {
@@ -16483,7 +16483,7 @@ input.text-input:-webkit-autofill {
   margin-top: 8px;
   margin-bottom: 8px;
   margin-left: 0;
-  width: calc(100% - 8px);
+  width: calc(100% - 4px);
 }
 
 .item-label-stacked .select-md,
@@ -16503,22 +16503,22 @@ input.text-input:-webkit-autofill {
 
 .input-md .text-input-clear-icon {
   background-image: url("data:image/svg+xml;charset=utf-8,<svg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20512%20512'><polygon%20fill='%235b5b5b'%20points='405,136.798%20375.202,107%20256,226.202%20136.798,107%20107,136.798%20226.202,256%20107,375.202%20136.798,405%20256,285.798%20375.202,405%20405,375.202%20285.798,256'/></svg>");
-  right: 8px;
+  right: 4px;
   width: 30px;
   background-size: 22px;
 }
 
 .text-input-wp {
-  margin: 13px 8px 13px 8px;
+  margin: 13px 4px 13px 4px;
   padding: 0 8px;
-  width: calc(100% - 8px - 8px);
+  width: calc(100% - 4px - 4px);
   border: 2px solid rgba(0, 0, 0, 0.5);
   line-height: 3rem;
 }
 
 .item-wp .inset-input {
-  margin: 6.5px 16px 6.5px 16px;
-  padding: 6.5px 8px 6.5px 8px;
+  margin: 6.5px 8px 6.5px 8px;
+  padding: 6.5px 4px 6.5px 4px;
 }
 
 .item-wp.item-input.input-has-focus .text-input {
@@ -16540,7 +16540,7 @@ input.text-input:-webkit-autofill {
   margin-top: 8px;
   margin-bottom: 8px;
   margin-left: 0;
-  width: calc(100% - 8px);
+  width: calc(100% - 4px);
 }
 
 .item-wp.item-label-stacked [item-right],
@@ -16560,7 +16560,7 @@ input.text-input:-webkit-autofill {
 
 .input-wp .text-input-clear-icon {
   background-image: url("data:image/svg+xml;charset=utf-8,<svg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%20512%20512'><polygon%20fill='rgba(0,%200,%200,%200.5)'%20points='405,136.798%20375.202,107%20256,226.202%20136.798,107%20107,136.798%20226.202,256%20107,375.202%20136.798,405%20256,285.798%20375.202,405%20405,375.202%20285.798,256'/></svg>");
-  right: 8px;
+  right: 4px;
   width: 30px;
   background-size: 22px;
 }
@@ -16899,7 +16899,7 @@ ion-item-sliding.active-swipe-left button[expandable] {
 
 .item-ios {
   position: relative;
-  padding-left: 16px;
+  padding-left: 8px;
   border-radius: 0;
   font-size: 1.7rem;
   color: #000;
@@ -16953,16 +16953,16 @@ ion-item-sliding.active-swipe-left button[expandable] {
 }
 
 .item-ios.item-block .item-inner {
-  padding-right: 8px;
+  padding-right: 4px;
   border-bottom: 0.55px solid #1e1e1e;
 }
 
 .item-ios [item-left] {
-  margin: 8px 16px 8px 0;
+  margin: 8px 8px 8px 0;
 }
 
 .item-ios [item-right] {
-  margin: 8px 8px 8px 8px;
+  margin: 8px 4px 8px 4px;
 }
 
 .item-ios ion-icon[item-left],
@@ -16985,12 +16985,12 @@ ion-item-sliding.active-swipe-left button[expandable] {
 
 .item-ios ion-avatar[item-left],
 .item-ios ion-thumbnail[item-left] {
-  margin: 8px 16px 8px 0;
+  margin: 4px 8px 4px 0;
 }
 
 .item-ios ion-avatar[item-right],
 .item-ios ion-thumbnail[item-right] {
-  margin: 8px;
+  margin: 4px;
 }
 
 .item-ios ion-avatar {
@@ -17023,7 +17023,7 @@ a.item-ios:not([detail-none]) .item-inner {
   background-image: url("data:image/svg+xml;charset=utf-8,<svg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2012%2020'><path%20d='M2,20l-2-2l8-8L0,2l2-2l10,10L2,20z'%20fill='%231e1e1e'/></svg>");
   padding-right: 32px;
   background-repeat: no-repeat;
-  background-position: right 14px center;
+  background-position: right 6px center;
   background-size: 14px 14px;
 }
 
@@ -17037,7 +17037,7 @@ ion-item-group .item-wrapper:last-child .item-ios .item-inner {
 }
 
 .item-divider-ios {
-  padding-left: 16px;
+  padding-left: 8px;
   color: #222;
   background-color: #ff9696;
 }
@@ -17269,7 +17269,7 @@ ion-item-group .item-wrapper:last-child .item-ios .item-inner {
 .item-md {
   position: relative;
   padding-right: 0;
-  padding-left: 16px;
+  padding-left: 8px;
   font-size: 1.6rem;
   font-weight: normal;
   text-transform: none;
@@ -17319,13 +17319,13 @@ ion-item-group .item-wrapper:last-child .item-ios .item-inner {
 }
 
 .item-md.item-block .item-inner {
-  padding-right: 8px;
+  padding-right: 4px;
   border-bottom: 1px solid #dedede;
 }
 
 .item-md [item-left],
 .item-md [item-right] {
-  margin: 9px 8px 9px 0;
+  margin: 9px 4px 9px 0;
 }
 
 .item-md ion-icon[item-left],
@@ -17348,17 +17348,17 @@ ion-item-group .item-wrapper:last-child .item-ios .item-inner {
 
 .item-md ion-icon[item-left] + .item-inner,
 .item-md ion-icon[item-left] + .item-input {
-  margin-left: 24px;
+  margin-left: 12px;
 }
 
 .item-md ion-avatar[item-left],
 .item-md ion-thumbnail[item-left] {
-  margin: 8px 16px 8px 0;
+  margin: 4px 8px 4px 0;
 }
 
 .item-md ion-avatar[item-right],
 .item-md ion-thumbnail[item-right] {
-  margin: 8px;
+  margin: 4px;
 }
 
 .item-md ion-avatar {
@@ -17395,7 +17395,7 @@ ion-item-group .item-md .item-wrapper:last-child .item-inner {
 }
 
 .item-divider-md {
-  padding-left: 16px;
+  padding-left: 8px;
   color: #858585;
   background-color: #ff9696;
   border-bottom: 1px solid #dedede;
@@ -17634,7 +17634,7 @@ ion-item-group .item-md .item-wrapper:last-child .item-inner {
 .item-wp {
   position: relative;
   padding-right: 0;
-  padding-left: 16px;
+  padding-left: 8px;
   font-size: 1.6rem;
   font-weight: normal;
   text-transform: none;
@@ -17683,13 +17683,13 @@ ion-item-group .item-md .item-wrapper:last-child .item-inner {
 }
 
 .item-wp.item-block .item-inner {
-  padding-right: 8px;
+  padding-right: 4px;
   border-bottom: 1px solid transparent;
 }
 
 .item-wp [item-left],
 .item-wp [item-right] {
-  margin: 9px 8px 9px 0;
+  margin: 9px 4px 9px 0;
 }
 
 .item-wp ion-icon[item-left],
@@ -17717,17 +17717,17 @@ ion-item-group .item-md .item-wrapper:last-child .item-inner {
 
 .item-wp ion-icon[item-left] + .item-inner,
 .item-wp ion-icon[item-left] + .item-input {
-  margin-left: 8px;
+  margin-left: 4px;
 }
 
 .item-wp ion-avatar[item-left],
 .item-wp ion-thumbnail[item-left] {
-  margin: 8px 16px 8px 0;
+  margin: 4px 8px 4px 0;
 }
 
 .item-wp ion-avatar[item-right],
 .item-wp ion-thumbnail[item-right] {
-  margin: 8px;
+  margin: 4px;
 }
 
 .item-wp ion-avatar {
@@ -17755,7 +17755,7 @@ ion-item-group .item-md .item-wrapper:last-child .item-inner {
 }
 
 .item-divider-wp {
-  padding-left: 16px;
+  padding-left: 8px;
   border-bottom: 1px solid transparent;
   font-size: 2rem;
   color: #000;
@@ -18059,14 +18059,14 @@ ion-label[floating] {
 }
 
 .label-ios {
-  margin: 11px 8px 11px 0;
+  margin: 11px 4px 11px 0;
 }
 
 .label-ios + ion-input .text-input,
 .label-ios + ion-textarea .text-input,
 .label-ios + .input + .cloned-input {
-  margin-left: 16px;
-  width: calc(100% - (16px / 2) - 16px);
+  margin-left: 8px;
+  width: calc(100% - (8px / 2) - 8px);
 }
 
 .label-ios[stacked] {
@@ -18175,7 +18175,7 @@ ion-label[floating] {
 }
 
 .label-md {
-  margin: 13px 8px 13px 0;
+  margin: 13px 4px 13px 0;
 }
 
 [text-wrap] .label-md {
@@ -18304,7 +18304,7 @@ ion-label[floating] {
 }
 
 .label-wp {
-  margin: 13px 8px 13px 0;
+  margin: 13px 4px 13px 0;
 }
 
 .item-input .label-wp,
@@ -18549,7 +18549,7 @@ ion-list[inset] {
 
 .list-header-ios {
   position: relative;
-  padding-left: 16px;
+  padding-left: 8px;
   border-bottom: 0.55px solid #1e1e1e;
   font-size: 1.2rem;
   font-weight: 500;
@@ -18703,7 +18703,7 @@ ion-list[inset] {
 
 .list-header-md {
   margin-bottom: 13px;
-  padding-left: 16px;
+  padding-left: 8px;
   min-height: 4.5rem;
   border-top: 1px solid #dedede;
   font-size: 1.4rem;
@@ -18863,7 +18863,7 @@ ion-list[inset] {
 }
 
 .list-header-wp {
-  padding-left: 16px;
+  padding-left: 8px;
   border-bottom: 1px solid transparent;
   font-size: 2rem;
   color: #000;
@@ -20007,7 +20007,7 @@ ion-popover {
 .item-ios .radio-ios {
   position: static;
   display: block;
-  margin: 8px 11px 8px 8px;
+  margin: 8px 11px 8px 4px;
 }
 
 .item-ios .radio-ios[item-left] {
@@ -22899,7 +22899,7 @@ ion-select {
 }
 
 .select-ios {
-  padding: 11px 8px 11px 16px;
+  padding: 11px 4px 11px 8px;
 }
 
 .select-ios .select-placeholder {
@@ -22927,7 +22927,7 @@ ion-select {
 }
 
 .select-md {
-  padding: 13px 8px 13px 16px;
+  padding: 13px 4px 13px 8px;
 }
 
 .select-md .select-placeholder {
@@ -22962,8 +22962,8 @@ ion-select {
   -webkit-flex: 1;
   -ms-flex: 1;
   flex: 1;
-  margin: 13px 8px 13px 8px;
-  padding: 0 8px;
+  margin: 13px 4px 13px 4px;
+  padding: 0 4px;
   max-width: 100%;
   border: 2px solid rgba(0, 0, 0, 0.5);
   line-height: 3rem;
@@ -25542,7 +25542,7 @@ ion-toast {
 
 .item-ios .toggle-ios {
   margin: 0;
-  padding: 6px 8px 5px 16px;
+  padding: 6px 4px 5px 8px;
 }
 
 .item-ios .toggle-ios[item-left] {
@@ -25645,7 +25645,7 @@ ion-toast {
 
 .item-md .toggle-md {
   margin: 0;
-  padding: 12px 8px 12px 16px;
+  padding: 12px 4px 12px 8px;
   cursor: pointer;
 }
 
@@ -25797,7 +25797,7 @@ ion-toast {
 
 .item-wp .toggle-wp {
   margin: 0;
-  padding: 12px 8px 12px 16px;
+  padding: 12px 4px 12px 8px;
   cursor: pointer;
 }
 
